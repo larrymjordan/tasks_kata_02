@@ -8,7 +8,7 @@ import (
 )
 
 func (as *ActionSuite) Test_Tasks_List() {
-	taskStorage = &models.Tasks{}
+	taskStorage = &models.DBTaskStorage{Tx: as.DB}
 
 	resp := as.JSON("/tasks").Get()
 	as.Equal(http.StatusOK, resp.Code)
@@ -18,7 +18,7 @@ func (as *ActionSuite) Test_Tasks_List() {
 
 	as.Len(tasks, 0)
 
-	taskStorage.Create(models.Task{
+	taskStorage.Create(&models.Task{
 		Description: "Do this",
 		IsDone:      true,
 	})
@@ -34,7 +34,7 @@ func (as *ActionSuite) Test_Tasks_List() {
 }
 
 func (as *ActionSuite) Test_Tasks_Create() {
-	taskStorage = &models.Tasks{}
+	taskStorage = &models.DBTaskStorage{Tx: as.DB}
 	resp := as.JSON("/tasks").Post(models.Task{
 		Description: "Do this",
 		IsDone:      true,

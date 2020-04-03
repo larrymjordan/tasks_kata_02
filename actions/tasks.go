@@ -5,7 +5,6 @@ import (
 	"tasks/models"
 
 	"github.com/gobuffalo/buffalo"
-	"github.com/gofrs/uuid"
 )
 
 var taskStorage models.TaskStorage = &models.DBTaskStorage{models.DB}
@@ -17,10 +16,9 @@ func TasksList(c buffalo.Context) error {
 
 // TasksCreate default implementation.
 func TasksCreate(c buffalo.Context) error {
-	task := models.Task{}
-	c.Bind(&task)
+	task := &models.Task{}
+	c.Bind(task)
 
-	task.ID = uuid.Must(uuid.NewV4())
 	taskStorage.Create(task)
 	return c.Render(http.StatusCreated, r.JSON(task))
 }

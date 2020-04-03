@@ -26,7 +26,7 @@ func (t Task) String() string {
 
 type TaskStorage interface {
 	List() Tasks
-	Create(Task)
+	Create(*Task)
 }
 
 // Tasks is not required by pop and may be deleted
@@ -36,8 +36,9 @@ func (t *Tasks) List() Tasks {
 	return *t
 }
 
-func (t *Tasks) Create(task Task) {
-	*t = append(*t, task)
+func (t *Tasks) Create(task *Task) {
+	task.ID = uuid.Must(uuid.NewV4())
+	*t = append(*t, *task)
 }
 
 // String is not required by pop and may be deleted
@@ -74,6 +75,6 @@ func (t *DBTaskStorage) List() Tasks {
 	return tasks
 }
 
-func (t *DBTaskStorage) Create(task Task) {
-	t.Tx.Create(&task)
+func (t *DBTaskStorage) Create(task *Task) {
+	t.Tx.Create(task)
 }

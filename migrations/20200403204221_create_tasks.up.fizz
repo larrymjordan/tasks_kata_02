@@ -1,6 +1,6 @@
 create_table("tasks") {
 	t.Column("id", "uuid", {primary: true})
-	t.Column("description", "string"})
+	t.Column("description", "string")
 	t.Column("is_done", "boolean")
 	t.Timestamps()
 }
